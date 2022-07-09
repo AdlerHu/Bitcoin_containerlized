@@ -1,0 +1,13 @@
+FROM fsfe/pipenv:python-3.8
+
+RUN apt-get update
+RUN apt-get install python3-dev default-libmysqlclient-dev build-essential -y
+
+RUN mkdir -p /charts/templates
+COPY . /charts/
+WORKDIR /charts/
+
+RUN pipenv sync
+CMD pipenv run python charts.py
+
+VOLUME [ "/charts/templates" ]

@@ -1,0 +1,11 @@
+FROM fsfe/pipenv:python-3.8
+
+RUN apt-get update
+RUN apt-get install python3-dev default-libmysqlclient-dev build-essential -y
+
+RUN mkdir /crawler/
+COPY . /crawler/
+WORKDIR /crawler/
+
+RUN pipenv sync
+CMD pipenv run python latest_price.py

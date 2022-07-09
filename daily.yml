@@ -1,0 +1,51 @@
+version: '3.3'
+services:
+
+  crawler:
+      image: crawler:1.0.0
+      network_mode: "container:bitcoin-mysql-1"
+
+  etl:
+      image: etl:1.0.0
+      network_mode: "container:bitcoin-mysql-1"
+      depends_on:
+        - crawler
+
+  predict:
+      image: predict:1.0.0
+      network_mode: "container:bitcoin-mysql-1"
+      depends_on:
+        - etl
+
+  result:
+      image: result:1.0.0
+      network_mode: "container:bitcoin-mysql-1"
+      depends_on:
+        - predict
+
+  charts:
+      image: charts:1.0.0
+      network_mode: "container:bitcoin-mysql-1"
+      depends_on:
+        - result
+      volumes:
+          - htmls:/charts/templates/
+
+  webapp:
+      image: webapp:1.0.0
+      network_mode: "host"
+      depends_on:
+        - charts
+      volumes:
+          - htmls:/webapp/templates/
+      ports:
+        - 5000:5000
+
+
+networks:
+  bitcoin_dev:
+    external: true
+
+volumes:
+  htmls:
+    external: true
