@@ -4,6 +4,7 @@ services:
   mysql:
       image: mysql:8.0
       # 設定 mysql 使用原生認證的密碼 hash
+      container_name: bitcoin_mysql
       command: mysqld --default-authentication-plugin=mysql_native_password
       ports: 
         # docker publish port 3306 to 3306 
@@ -15,8 +16,8 @@ services:
       environment: # 環境變數, 設置 db, user, password, root_password
           MYSQL_DATABASE: mydb
           MYSQL_USER: user
-          MYSQL_PASSWORD: test
-          MYSQL_ROOT_PASSWORD: test
+          MYSQL_PASSWORD: hl4su3ao4
+          MYSQL_ROOT_PASSWORD: hl4su3ao4
       volumes:
           - mysql:/var/lib/mysql
           # share volumes of docker container to outside volume, 
@@ -28,6 +29,7 @@ services:
 
   phpmyadmin:
       image: phpmyadmin/phpmyadmin:5.1.0
+      container_name: bitcoin_phpmyadmin
       links: 
           - mysql:db
       ports:
@@ -36,7 +38,7 @@ services:
         - mysql
       networks:
           - dev
-     
+
 networks:
   dev:
 
