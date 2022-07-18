@@ -41,12 +41,12 @@ echo "#!/bin/sh
 
 rm -f /var/lib/docker/volumes/htmls/_data/*
 
-docker run --name crawler --net=container:bitcoin_mysql adlerhu/bitcoin_crawler >> /tmp/crawler.txt
-docker run --name etl --net=container:bitcoin_mysql adlerhu/bitcoin_etl >> /tmp/etl.txt
-docker run --name predict --net=container:bitcoin_mysql adlerhu/bitcoin_predict >> /tmp/predict.txt
-docker run --name result --net=container:bitcoin_mysql adlerhu/bitcoin_result >> /tmp/result.txt
-docker run --name charts --net=container:bitcoin_mysql -v htmls:/charts/templates/ adlerhu/bitcoin_charts >> /tmp/charts.txt
-docker run --name webapp -d --net=host -v htmls:/webapp/templates/ adlerhu/bitcoin_webapp >> /tmp/webapp.txt
+docker run --name crawler --net=container:bitcoin_mysql adlerhu/bitcoin_crawler
+docker run --name etl --net=container:bitcoin_mysql adlerhu/bitcoin_etl
+docker run --name predict --net=container:bitcoin_mysql adlerhu/bitcoin_predict
+docker run --name result --net=container:bitcoin_mysql adlerhu/bitcoin_result
+docker run --name charts --net=container:bitcoin_mysql -v htmls:/charts/templates/ adlerhu/bitcoin_charts
+docker run --name webapp -d --net=host -v htmls:/webapp/templates/ adlerhu/bitcoin_webapp
 
 docker rm -f $(docker ps -qf status=exited)" >> /root/daily.sh
 
