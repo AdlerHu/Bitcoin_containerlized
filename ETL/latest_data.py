@@ -35,7 +35,9 @@ def update_historical_table(cursor, date_list):
                 FROM	`oil_historical_data`
                 WHERE	date <= h.date
                 ORDER BY date DESC LIMIT 1
-            )WHERE h.date = \'{date}\';'''
+            ),
+            h.future = date_add(\'{date}\', INTERVAL 7 DAY)
+            WHERE h.date = \'{date}\';'''
         try:
             cursor.execute(sql_str)
         except Exception as err:

@@ -26,8 +26,9 @@ def insert_prediction(cursor, date, prediction):
 
 
 def get_unpredicted_data(db):
-    sql_str = '''SELECT date_add(h.date, INTERVAL 7 day) as 'date', h.bitcoin_price, h.gold_price, h.oil_price FROM `historical_data` as h 
-        WHERE ( SELECT COUNT(1) FROM `result` as r WHERE date_add(h.date, INTERVAL 7 day) = r.date) = 0;'''
+    sql_str = '''SELECT h.future, h.bitcoin_price, h.gold_price, h.oil_price 
+        FROM `historical_data` as h 
+        WHERE ( SELECT COUNT(1) FROM `result` as r WHERE h.future = r.date) = 0;'''
     data_row = pd.read_sql_query(sql_str, db)
     
     return data_row
@@ -38,7 +39,7 @@ def prediction(db, cursor, model):
 
     raw_data = get_unpredicted_data(db=db)
 
-    date_list = list(raw_data['date'])
+    date_list = list(raw_data['future'])
     bitcoin_list = list(raw_data['bitcoin_price'])
     gold_list = list(raw_data['gold_price'])
     oil_list = list(raw_data['oil_price'])

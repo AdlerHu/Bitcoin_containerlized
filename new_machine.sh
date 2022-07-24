@@ -40,21 +40,18 @@ touch /root/daily.sh
 echo "#!/bin/sh
 
 rm -f /var/lib/docker/volumes/htmls/_data/*
-
 docker run --name crawler --net=container:bitcoin_mysql adlerhu/bitcoin_crawler
 docker run --name etl --net=container:bitcoin_mysql adlerhu/bitcoin_etl
 docker run --name predict --net=container:bitcoin_mysql adlerhu/bitcoin_predict
 docker run --name result --net=container:bitcoin_mysql adlerhu/bitcoin_result
 docker run --name charts --net=container:bitcoin_mysql -v htmls:/charts/templates/ adlerhu/bitcoin_charts
 docker run --name webapp -d --net=host -v htmls:/webapp/templates/ adlerhu/bitcoin_webapp
-
-docker rm -f $(docker ps -qf status=exited)" >> /root/daily.sh
+docker container prune " >> /root/daily.sh
 
 # mysql
 touch /root/mysql.yml
 echo "version: '3.3'
 services:
-
   mysql:
       image: mysql:8.0
       container_name: bitcoin_mysql
@@ -70,7 +67,6 @@ services:
           - mysql:/var/lib/mysql
       networks:
           - dev
-
   phpmyadmin:
       image: phpmyadmin/phpmyadmin:5.1.0
       container_name: bitcoin_phphmyadmin
@@ -85,7 +81,6 @@ services:
      
 networks:
   dev:
-
 volumes:
   mysql:
     external: true" >> /root/mysql.yml
